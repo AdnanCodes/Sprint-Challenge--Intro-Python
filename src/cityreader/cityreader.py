@@ -2,8 +2,12 @@
 # fields for name, lat and lon (representing latitude and longitude).
 
 
+import csv
+
+
 class City:
-    def __init__(self, lat, lon):
+    def __init__(self, name, lat, lon):
+        self.name = name
         self.lat = lat
         self.lon = lon
 
@@ -27,7 +31,11 @@ def cityreader(cities=[]):
   # TODO Implement the functionality to read from the 'cities.csv' file
   # For each city record, create a new City instance and add it to the
   # `cities` list
-
+    with open('cities.csv', 'r') as cities_csv:
+        csv_reader = csv.reader(cities_csv)
+        next(csv_reader)
+        for line in csv_reader:
+            cities.append(City((line[0]), float(line[3]), float(line[4])))
     return cities
 
 
@@ -35,7 +43,7 @@ cityreader(cities)
 
 # Print the list of cities (name, lat, lon), 1 record per line.
 for c in cities:
-    print(c)
+    print(f"{c.name}, {c.lat}, {c.lon}")
 
 # STRETCH GOAL!
 #
@@ -70,7 +78,7 @@ for c in cities:
 
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
-  # within will hold the cities that fall within the specified region
+    # within will hold the cities that fall within the specified region
     within = []
 
     # TODO Ensure that the lat and lon valuse are all floats
