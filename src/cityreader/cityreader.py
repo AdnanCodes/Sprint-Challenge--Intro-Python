@@ -11,6 +11,9 @@ class City:
         self.lat = lat
         self.lon = lon
 
+    def __str__(self):
+        return f"{self.name}, {self.lat}, {self.lon}"
+
 
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
@@ -79,10 +82,33 @@ for c in cities:
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
     # within will hold the cities that fall within the specified region
-    within = []
+
+    # normalize lats and lons
+
+    if(lat2 < lat1):
+        lat1, lat2 = lat2, lat1
+    if(lon2 < lon1):
+        lon1, lon2 = lon2, lon1
+
+    within = [city for city in cities if city.lat >=
+              lat1 and city.lat <= lat2 and city.lon >= lon1 and city.lon <= lon2]
 
     # TODO Ensure that the lat and lon valuse are all floats
     # Go through each city and check to see if it falls within
     # the specified coordinates.
 
     return within
+
+
+print("Search cities within a range, separate lats and lon with comma")
+first_input = input("Enter lat1, lon1: ")
+second_input = input("Enter lat2, lon2: ")
+
+lat1 = float(first_input.split(",")[0])
+lon1 = float(first_input.split(",")[1])
+
+lat2 = float(second_input.split(",")[0])
+lon2 = float(second_input.split(",")[1])
+
+for c in cityreader_stretch(lat1, lon1, lat2, lon2, cities):
+    print(f"{c.name}, {c.lat}, {c.lon}")
